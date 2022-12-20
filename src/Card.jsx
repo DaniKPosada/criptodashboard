@@ -1,7 +1,7 @@
 import "./Card.css" //estilos del componente
 import Graph from "./Graph" //componnete de gráficas
-import {colorDec} from './App' //función global
-//exportamos la función de card con props de la API
+import {colorDec} from './App' //función de app
+//de una se declara y exporta la función
 export default function Card({coinId, cur, porcentaje, price, img}){
     return (
         <div className="card">
@@ -9,12 +9,12 @@ export default function Card({coinId, cur, porcentaje, price, img}){
             <img src={img} alt=""/>
             <div className="con-main">
                 <div className="con-title">
-                    {/* se muestran los datos de las tarjetas al aldo del card principal */}
+                    {/* se muestran los datos de las tarjetas al aldo de la tarjeta principal */}
                     <h2 className={`price ${colorDec(porcentaje)}`}>{price}</h2>
-                    {/* Porcentaje de cada carta */}
+                    {/* Porcentaje de cada tarjeta */}
                     <h4 className={`porcentajes ${colorDec(porcentaje)}`}>{porcentaje}%</h4>
                 </div>
-                {/* Gráfica de cada carta */}
+                {/* Gráfica de cada tarjeta */}
                 <Graph coin={coinId} currency={cur} color={colorDec(porcentaje)}/>
             </div>
         </div>

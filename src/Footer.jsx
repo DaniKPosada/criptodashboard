@@ -8,7 +8,7 @@ import LogoJesus from './img/LogoJesus.svg';
 import LogoNicolas from './img/LogoNicolas.svg';
 import LogoDruck from './img/LogoDruck.jpeg';
 import LogoYeray from './img/LogoYeray.png';
-
+//Simple código JSX para organizar texto e imagenes del footer. 
 const Footer = () => {
     return (
         <div className="Footer">

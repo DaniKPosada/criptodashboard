@@ -1,53 +1,52 @@
-import { useEffect, useState } from 'react' //Hooks de react
-import "./App.css"; //Hoja de estilos
+import { useEffect, useState } from 'react' //Importación de Hooks de react
+import "./App.css"; // Unica Hoja de estilos hecha por mis compañeros
 
 
-//----------Componentes
-import CardPrincipal from './CardPrincipal';
-import TableCoins from './TableCoins';
-import Card from './Card'
-import Convert from './Convert';
-import Footer from './Footer'
-import Header from './Header'
+//----------Componentes que forman el dashboard
+import CardPrincipal from './CardPrincipal'; 
+import TableCoins from './TableCoins'; //componente de la tabla al final del dashboard
+import Card from './Card' //se refiere a las pequeñas tarjetas del lado derecho
+import Convert from './Convert'; //convierte las monedas
+import Footer from './Footer' //se refiere al footer
+import Header from './Header' //se refiere al header
 
 //Componente Dark mode
 import {ThemeProvider} from "./Context/ThemeProvider";
 
-//----------------Funciones golbales para el código
-//Acorta los números decimales
+//Funcionalidades para todo  el código
+//Redondeo y aproximación a cifras significativas para acortar el numero decimal
 export function deleteDec(val, decimal) {
   return val.toFixed(decimal)
 }
-//Cambia el color dependiendos si el resultado es menor o mayor a 0
+//Cambia el color si el resultado es menor o mayor a 0
 export function colorDec(num) {
   return num > 0 ? "green" : "red"
 }
-//Toma el formato de los números al español
+//Establece el formato de los números al español
 export const numberF = Intl.NumberFormat("es-ES")
 
-//----------------Funcion default con todos los componentes
+//-Funcion default todos los componentes
 export default function App() {
-  const [coins, setCoins] = useState() //Monedas
-  const [currency, setCurrency] = useState() //Valor actual
-  const [selCur, setSelCur] = useState("usd") //Tipo de moneda
+  const [coins, setCoins] = useState() // Hooks para las Monedas
+  const [currency, setCurrency] = useState() //Hook del valor actual
+  const [selCur, setSelCur] = useState("usd") //Hook para el Tipo de moneda
   const getData = async () => { //LLamado de la API asíncrono
-    //hacemos el llamado de la API con el metodo interno de JS fetch,
-    //usamos las template strings ya que dentro de la URL contamos con una variable de cambio declarada en el use state de la línea 32
+    //Código utilizado para el llamado de las informaciones necesarias desde la API. 
+    //dentro de la url se define la variable selcur que permitirá traer los nuevos datos deseados cuando este cambie
     const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${selCur}&order=market_cap_desc&per_page=4&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C30d%2C90d%2C1y`)
-    //Juntamos la llamada de la API a un json() para su lectura
-    const json = await response.json() //Información primaria (Global) - Información de API de acuerdo al selector
-    //realizamos el llamado de una segunda API de la misma forma
+    
+    const json = await response.json() 
     const response_cur = await fetch("https://api.coingecko.com/api/v3/simple/supported_vs_currencies")
-    const cur = await response_cur.json() //Información secundaria - Selec de datos
-    setCoins(json)//Dentro de la función setCoins agregamos el parámetro del json - Información de las API
-    setCurrency(cur)//Cambio de información en la página de acuerdo a la var cur
+    const cur = await response_cur.json() 
+    setCoins(json)
+    setCurrency(cur)
   }
   useEffect(() => { //Realiza la primer acción en el VDOM después del DOM
-    getData() //Función API
+    getData() //Función para invocar la API
   }, [])
-  useEffect(() => { //Actualiza la info cuando el selCur ha sido modificado
+  useEffect(() => { //Actualizar la info cuando el selCur cambie
     getData()
-  }, [selCur]) //var selCur
+  }, [selCur]) 
 
   return ( //Regresamos componentes en etiquetas
     !coins ? "Cargando..." : ( //Operador ternario que funciona mientras la página se encuentra cargando
@@ -73,11 +72,9 @@ export default function App() {
             }
           </div>
         </main>
-        {/* Llamamos al componente de Convert */}
+        {/*Componentes internos de este componente junto a sus props*/}
         <Convert />
-        {/* Llamamos al componente de TableCoins dentro de él la variable de coins */}
         <TableCoins coins={coins} />
-        {/* Llamamos al componente de Footer */}
         <Footer />
       </div>
     )
